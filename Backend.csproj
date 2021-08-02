@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConcreteStatService.cs" />
+    <Compile Include="CountryService.cs" />
+    <Compile Include="ICountryService.cs" />
     <Compile Include="IDbManager.cs" />
     <Compile Include="IStatService.cs" />
     <Compile Include="Program.cs" />
