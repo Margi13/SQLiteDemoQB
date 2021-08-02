@@ -91,6 +91,7 @@ namespace Backend
 
 		static void WriteResultList(List<Tuple<string, int>> resultList)
 		{
+			resultList.Sort();
 			foreach (var listItem in resultList)
 			{
 				Console.WriteLine(listItem.Item1 + " --> " + listItem.Item2);
