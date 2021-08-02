@@ -28,6 +28,9 @@ namespace Backend
 				List<Tuple<string, int>> countryPopulationsDB = GetCountryPopulationsFromDB(conn);
 				WriteResultList(countryPopulationsDB);
 
+				Console.WriteLine("\nCombined country populations. SQLite Database preferred:");
+				List<Tuple<string, int>> countryPopulationsCombined = GetCombinedCountryPopulations(countryPopulationsDB);
+				WriteResultList(countryPopulationsCombined);
 			}
 
 			conn.Close();
@@ -66,6 +69,24 @@ namespace Backend
 			dataReader.Close();
 
 			return countryPopulationsDB;
+		}
+
+		static List<Tuple<string, int>> GetCombinedCountryPopulations(List<Tuple<string, int>> countryPopulationsDB)
+		{
+			List<Tuple<string, int>> combined = new List<Tuple<string, int>>(countryPopulationsDB);
+
+			ConcreteStatService css = new ConcreteStatService();
+			List<Tuple<string, int>> countryPopulationsStat = css.GetCountryPopulations();
+
+			foreach (var country in countryPopulationsStat)
+			{
+				if (!combined.Contains(country))
+				{
+					combined.Add(country);
+				}
+
+			}
+			return combined;
 		}
 
 		static void WriteResultList(List<Tuple<string, int>> resultList)
