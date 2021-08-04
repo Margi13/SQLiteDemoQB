@@ -26,11 +26,11 @@ namespace Backend
 			}
 			else
 			{
-				Console.WriteLine("\nCountry populations from SQLite Database:");
+				Console.WriteLine("\nCountry populations from SQLite Database:\n");
 				List<Tuple<string, int>> countryPopulationsDB = cs.GetCountryPopulationsFromDB(conn);
 				WriteResultList(countryPopulationsDB);
 
-				Console.WriteLine("\nCombined country populations. SQLite Database preferred:");
+				Console.WriteLine("\nCombined country populations. SQLite Database preferred:\n");
 				List<Tuple<string, int>> countryPopulationsCombined = cs.GetCombinedCountryPopulations(countryPopulationsDB);
 				WriteResultList(countryPopulationsCombined);
 			}

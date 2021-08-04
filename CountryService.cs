@@ -17,6 +17,8 @@ namespace Backend
 			ConcreteStatService css = new ConcreteStatService();
 			List<Tuple<string, int>> countryPopulationsStat = css.GetCountryPopulations();
 
+
+
 			foreach (var country in countryPopulationsStat)
 			{
 				if (!combined.Contains(country))
@@ -42,17 +44,29 @@ namespace Backend
 												"GROUP BY CountryId";
 
 			SQLiteDataReader dataReader;
-			SQLiteCommand cmd = (SQLiteCommand)conn.CreateCommand();
-
-			cmd.CommandText = selectPopulationCmd;
-			dataReader = cmd.ExecuteReader();
-
+			SQLiteCommand cmd;
 			List<Tuple<string, int>> countryPopulationsDB = new List<Tuple<string, int>>();
+
+			try
+			{
+				cmd = (SQLiteCommand)conn.CreateCommand();
+				cmd.CommandText = selectPopulationCmd;
+				dataReader = cmd.ExecuteReader();
+
+
+			}
+			catch (SQLiteException ex)
+			{
+				Console.WriteLine(ex.Message);
+				return null;
+			}
 
 			while (dataReader.Read())
 			{
 				string countryName = dataReader.GetString(dataReader.GetOrdinal("Country"));
-				int populations = Convert.ToInt32(dataReader.GetValue(dataReader.GetOrdinal("Population")));
+				var populationsReaded = dataReader.GetValue(dataReader.GetOrdinal("Population"));
+
+				int populations = Convert.ToInt32(populationsReaded);
 
 				countryPopulationsDB.Add(Tuple.Create(countryName, populations));
 			}
