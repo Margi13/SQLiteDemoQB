@@ -17,8 +17,6 @@ namespace Backend
 			ConcreteStatService css = new ConcreteStatService();
 			List<Tuple<string, int>> countryPopulationsStat = css.GetCountryPopulations();
 
-
-
 			foreach (var country in countryPopulationsStat)
 			{
 				if (!combined.Contains(country))
@@ -42,6 +40,15 @@ namespace Backend
 													"FROM State s " +
 													"WHERE s.StateId = c.StateId) " +
 												"GROUP BY CountryId";
+			string selectPopulationWithJoinCmd = "SELECT " +
+													"CountryName AS Country, " +
+													"SUM(Population) AS Population " +
+												"FROM City c " +
+												"JOIN State s "+
+												"ON s.StateId = c.StateId " +
+			 									"JOIN Country co " +
+												"ON co.CountryId = s.CountryId " +
+												"GROUP BY co.CountryId";
 
 			SQLiteDataReader dataReader;
 			SQLiteCommand cmd;
@@ -50,7 +57,7 @@ namespace Backend
 			try
 			{
 				cmd = (SQLiteCommand)conn.CreateCommand();
-				cmd.CommandText = selectPopulationCmd;
+				cmd.CommandText = selectPopulationWithJoinCmd;
 				dataReader = cmd.ExecuteReader();
 
 
